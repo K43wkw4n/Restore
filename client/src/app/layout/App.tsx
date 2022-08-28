@@ -1,8 +1,12 @@
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { Container } from '@mui/system';
-import React, { useState } from 'react'
-import Catalog from '../../features/Catalog';
-import catalog from '../../features/Catalog';
+import { useState } from 'react'
+import { Routes, Route } from 'react-router-dom';
+import AboutPage from '../../features/about/AboutPage';
+import Catalog from '../../features/catalog/Catalog';
+import ProductDetails from '../../features/catalog/ProductDetails';
+import ContactPage from '../../features/contact/ContactPage';
+import HomePage from '../../features/home/HomePage';
 import Header from './Header'
 
 
@@ -24,7 +28,13 @@ export default function App() {
         <CssBaseline />
         <Header handlemode={handlemode}/>
         <Container>
-          <Catalog />
+          <Routes>
+            <Route path='/' element={<HomePage />} />
+            <Route path='/about' element={<AboutPage />} />
+            <Route path='/contact' element={<ContactPage />} />
+            <Route path='/catalog' element={<Catalog />} />            
+            <Route path='/catalog/:id' element={<ProductDetails />} />            
+          </Routes>
         </Container>
       </ThemeProvider>
     </>
