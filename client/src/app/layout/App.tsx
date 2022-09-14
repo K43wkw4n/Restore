@@ -2,13 +2,16 @@ import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { Container } from '@mui/system';
 import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AboutPage from '../../features/about/AboutPage';
 import Catalog from '../../features/catalog/Catalog';
 import ProductDetails from '../../features/catalog/ProductDetails';
 import ContactPage from '../../features/contact/ContactPage';
 import HomePage from '../../features/home/HomePage';
+import NotFound from '../errors/NotFound';
+import ServerError from '../errors/ServerError';
 import Header from './Header'
-
 
 export default function App() {
   const [mode, setMode] = useState(true)
@@ -25,6 +28,11 @@ export default function App() {
   return (
     <>
       <ThemeProvider theme={darkTheme}>
+      <ToastContainer
+      position="bottom-right"
+      theme="colored"
+      autoClose = {1000}
+      />
         <CssBaseline />
         <Header handlemode={handlemode}/>
         <Container>
@@ -33,7 +41,9 @@ export default function App() {
             <Route path='/about' element={<AboutPage />} />
             <Route path='/contact' element={<ContactPage />} />
             <Route path='/catalog' element={<Catalog />} />            
-            <Route path='/catalog/:id' element={<ProductDetails />} />            
+            <Route path='/catalog/:id' element={<ProductDetails />} />
+            <Route path="/server-error" element={<ServerError />} />
+            <Route path='*' element={<NotFound />} />
           </Routes>
         </Container>
       </ThemeProvider>

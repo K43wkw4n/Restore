@@ -25,8 +25,7 @@ export default function ProductCard({product} : props) {
         }
         title={product.pictureUrl}
         subheader={product.name}
-      />
-
+      /> 
         <CardMedia
           component="img"
           height="100%"

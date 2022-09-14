@@ -63,7 +63,7 @@ export default function Header(props : any) {
             {rightLinks.map(({title,path})=> (
               <ListItem component={NavLink} to={path} sx={navStyles}>{title}</ListItem>
             ))}
-          </List>
+            </List>
           </Box>
         </Toolbar>
       </AppBar>
