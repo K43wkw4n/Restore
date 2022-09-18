@@ -1,11 +1,10 @@
 import axios, { Axios, AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { history } from "../..";
-
-
+import { history } from "../.."; 
 
 axios.defaults.baseURL = "http://localhost:5000/api/";
+axios.defaults.withCredentials = true;
 
 const ResponseBody = (response: AxiosResponse) => response.data;
 
@@ -52,12 +51,12 @@ axios.interceptors.response.use(
         break;
     }
   }
-);
-
- 
+); 
 
 const requests = {
   get: (url: string) => axios.get(url).then(ResponseBody),
+  post: (url: string,body?:{}) => axios.post(url,body).then(ResponseBody),
+  delete: (url: string) => axios.delete(url).then(ResponseBody),
 };
 
 const Catalog = {
@@ -73,9 +72,16 @@ const TestErrors = {
   getValidationError: () => requests.get("buggy/GetValidationError"),
 };
 
+const Basket = {
+  get:()=>requests.get('basket'),
+  addItem: (productId:number,quantity = 1)=> requests.post(`basket?productId=${productId}&quantity=${quantity}`,{}),
+  RemoveItem: (productId:number,quantity = 1)=> requests.delete(`basket?productId=${productId}&quantity=${quantity}`), 
+}
+
 const agent = {
   Catalog,
   TestErrors,
+  Basket,
 };
 
 export default agent;
