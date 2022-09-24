@@ -1,16 +1,26 @@
-import { Box, AppBar, Toolbar, IconButton, Typography,Switch, Badge, List,ListItem } from '@mui/material';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { Link, NavLink } from 'react-router-dom';  
-import { useStoreContext } from '../context/StoreContext';
+import {
+  Box,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Switch,
+  Badge,
+  List,
+  ListItem,
+} from "@mui/material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Link, NavLink } from "react-router-dom"; 
+import { useAppSelector } from "../store/configureStore";
 
 const midLinks = [
   { title: "catalog", path: "/catalog" },
   { title: "about", path: "/about" },
   { title: "contact", path: "/contact" },
-  ];
+];
 const rightLinks = [
-{ title: "login", path: "/login" },
-{ title: "register", path: "/register" },
+  { title: "login", path: "/login" },
+  { title: "register", path: "/register" },
 ];
 
 const navStyles = {
@@ -18,20 +28,19 @@ const navStyles = {
   textDecoration: "none",
   typography: "h6",
   "&:hover": {
-  color: "grey.500",
+    color: "grey.500",
   },
   "&.active": {
-  color: "text.secondary",
+    color: "text.secondary",
   },
-  };
+};
 
-export default function Header(props : any) {
-
-  const { basket } = useStoreContext();
+export default function Header(props: any) {  
+  const {basket} = useAppSelector(state=>state.basket);
   const itemCount = basket?.items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <Box sx={{ flexGrow: 1, mb: 3 }}>
+    <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar
           sx={{
@@ -46,28 +55,44 @@ export default function Header(props : any) {
               onChange={props.handlemode}
               color="secondary"
             />
-            <Typography variant="h6" component="div">
-              Nobody Love
-            </Typography>
+            <IconButton component={NavLink} to="/" sx={navStyles}>
+              <Typography variant="h6" component="div">
+                Nobody Love
+              </Typography>
+            </IconButton>
           </Box>
 
-          <List sx={{display:'flex'}}>
-            {midLinks.map(({title,path})=> (
-              <ListItem key={title} component={NavLink} to={path} sx={navStyles}>{title}</ListItem>
+          <List sx={{ display: "flex" }}>
+            {midLinks.map(({ title, path }) => (
+              <ListItem
+                key={title}
+                component={NavLink}
+                to={path}
+                sx={navStyles}
+              >
+                {title}
+              </ListItem>
             ))}
           </List>
 
-          <Box sx={{display:'flex'}}>
-            <IconButton component={Link} to='/basket' size="large" aria-label="cart" >
+          <Box sx={{ display: "flex" }}>
+            <IconButton
+              component={Link}
+              to="/basket"
+              size="large"
+              aria-label="cart"
+            >
               <Badge badgeContent={itemCount} color="secondary">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
 
-            <List sx={{display:'flex'}}>
-            {rightLinks.map(({title,path})=> (
-              <ListItem component={NavLink} to={path} sx={navStyles}>{title}</ListItem>
-            ))}
+            <List sx={{ display: "flex" }}>
+              {rightLinks.map(({ title, path }) => (
+                <ListItem component={NavLink} to={path} sx={navStyles}>
+                  {title}
+                </ListItem>
+              ))}
             </List>
           </Box>
         </Toolbar>
