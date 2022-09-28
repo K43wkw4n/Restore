@@ -1,6 +1,8 @@
 import { Grid } from '@mui/material'
 import { Product } from '../../app/models/Product'
+import { useAppSelector } from '../../app/store/configureStore';
 import ProductCard from './ProductCard'
+import ProductCardSkeleton from './ProductCardSkeleton';
 
 interface props {
   products : Product[]
@@ -8,17 +10,22 @@ interface props {
 }
 
 export default function ProductList({products} : props) {
+  const { productsLoaded } = useAppSelector((state) => state.catalog);
+
   return (
     <>
-      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-        {products.map((product:any) => {
-          return (
-            <Grid item sm={4} md={4} key={product.id}>
+      <Grid container spacing={4}>
+        {products.map((product) => (
+          <Grid item xs={4} key={product.id}>
+            {!productsLoaded ? (
+              <ProductCardSkeleton />
+            ) : (
               <ProductCard product={product} />
-            </Grid>
-          )
-        })}
-      </Grid>    
+            )}
+          </Grid>
+        ))}
+      </Grid>
     </>
+
   )
 }
