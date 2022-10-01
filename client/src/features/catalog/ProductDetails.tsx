@@ -11,24 +11,17 @@ import {
   TextField,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import agent from "../../app/api/agent";
+import { useParams } from "react-router-dom"; 
 import NotFound from "../../app/errors/NotFound";
-import LoadingComponent from "../../app/layout/LoadingComponent";
-import { Product } from "../../app/models/Product";
+import LoadingComponent from "../../app/layout/LoadingComponent"; 
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import {
-  addBasketItemAsync,
-  removeBasketItemAsync,
-  removeItem,
-  setBasket,
-} from "../basket/basketSlice";
+import { addBasketItemAsync, removeBasketItemAsync, } from "../basket/basketSlice";
 import { fetchProductAsync, productSelectors } from "./catalogSlice";
 
 export default function ProductDetails() {
   const { id } = useParams<{ id: any }>(); //อ่ํานค่ําจํากพํารํามิเตอร์ที่ส่งมําตํามพําท (URL Parameters)
-const product = useAppSelector(state => productSelectors.selectById(state, id));
-const {status: productStatus} = useAppSelector(state => state.catalog); 
+  const product = useAppSelector(state => productSelectors.selectById(state, id));
+  const {status: productStatus} = useAppSelector(state => state.catalog); 
 
   const dispatch = useAppDispatch();
   const { basket, status } = useAppSelector((state) => state.basket); 

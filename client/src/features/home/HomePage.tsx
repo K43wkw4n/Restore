@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react"; 
+import { useEffect } from "react"; 
 import Slider from "react-slick";
 import { useAppDispatch } from "../../app/store/configureStore";
 import { setScreen } from "./homeSlice";
@@ -13,7 +13,7 @@ export default function HomePage() {
       dispatch(setScreen())
     }
   },[dispatch])
- 
+  
   return (
     <>
       <div>
