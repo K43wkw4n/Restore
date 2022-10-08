@@ -19,7 +19,7 @@ export default function HomePage() {
       <div>
         <Slider >
           {[1,2,3,4,5].map(item=>(
-            <img src={`https://picsum.photos/200/300?${Math.random()}`} alt="" height={660} /> 
+            <img src={`https://picsum.photos/200/300?${Math.random()}`} alt="" height={658} /> 
           ))}
         </Slider>
       </div>
