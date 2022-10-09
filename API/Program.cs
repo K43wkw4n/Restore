@@ -2,6 +2,7 @@ using System.Text;
 using API.Data;
 using API.Entities;
 using API.Middleware;
+using API.RequestHelpers;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -96,7 +97,7 @@ builder.Services.AddCors(options =>
                           policy.AllowAnyHeader()
                           .AllowAnyMethod()   //
                           .AllowCredentials() //อนุญาตให้ใช้คุกกี้
-                          .WithOrigins("http://localhost:3000");
+                          .SetIsOriginAllowed(x=>true);
                       });
 });
 #endregion
@@ -123,11 +124,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                                    .GetBytes(builder.Configuration["JWTSettings:TokenKey"]))
                            };
                        });
-#endregion
 
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<PaymentService>();
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+builder.Services.AddScoped<ImageService>();
+#endregion
 
 var app = builder.Build();
 

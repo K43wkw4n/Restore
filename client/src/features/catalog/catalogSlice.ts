@@ -112,7 +112,16 @@ export const catalogSlice = createSlice({
     setPageNumber: (state, action) => {
       state.productsLoaded = false;
       state.productParams = {...state.productParams, ...action.payload};
-    }
+    },
+    setProduct: (state, action) => {
+      productsAdapter.upsertOne(state, action.payload);
+      state.productsLoaded = false;
+    },
+    removeProduct: (state, action) => {
+      productsAdapter.removeOne(state, action.payload); //มีไว้ทำอะไร
+      state.productsLoaded = false; //state เปลี่ยนไปทำการโหลดข้อมูลมาใหม่ที่ useProduct.tsx
+    },
+
   },
   extraReducers: (builder) => {
     builder.addCase(fetchProductsAsync.pending, (state) => {
@@ -159,5 +168,5 @@ export const productSelectors = productsAdapter.getSelectors(
   (state: RootState) => state.catalog
 );
 
-export const { setProductParams, resetProductParams, setMetaData, setPageNumber } =
+export const { setProductParams, resetProductParams, setMetaData, setPageNumber, setProduct, removeProduct } =
   catalogSlice.actions;
