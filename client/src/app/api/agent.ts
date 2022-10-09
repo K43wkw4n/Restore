@@ -53,6 +53,9 @@ axios.interceptors.response.use(async (response) => {
       case 401:
         toast.error(result.title);
         break;
+      case 403:
+        toast.error('You are not allowed to do that!');
+        break;
       case 404:
         toast.error(result.title);
         break;
@@ -67,11 +70,20 @@ axios.interceptors.response.use(async (response) => {
   }
 ); 
 
+//get: (url: string,params? : URLSearchParams) หมายถึงเช่น product?params=100
+//สามารถแนบพารามิเตอร์สำหรับส่งไปค้นได้
 const requests = {
-  get: (url: string, params?: URLSearchParams) => axios.get(url, {params}).then(ResponseBody),
-  post: (url: string,body?:{}) => axios.post(url,body).then(ResponseBody),
-  delete: (url: string) => axios.delete(url).then(ResponseBody),
-};
+    get: (url: string, params?: URLSearchParams) => axios.get(url, { params }).then(ResponseBody),
+    post: (url: string, body: {}) => axios.post(url, body).then(ResponseBody),
+    put: (url: string, body: {}) => axios.put(url, body).then(ResponseBody),
+    delete: (url: string) => axios.delete(url).then(ResponseBody),
+    postForm: (url: string, data: FormData) => axios.post(url, data, {
+        headers: { 'Content-type': 'multipart/form-data' }
+    }).then(ResponseBody),
+    putForm: (url: string, data: FormData) => axios.put(url, data, {
+        headers: { 'Content-type': 'multipart/form-data' }
+    }).then(ResponseBody)
+}
 
 const Catalog = {
   list: (params: URLSearchParams) => requests.get('products', params), 
@@ -110,6 +122,20 @@ const Payments = {
   createPaymentIntent: () => requests.post('payments', {})
 }
 
+function createFormData(item: any) {
+  let formData = new FormData();
+  for (const key in item) {
+      formData.append(key, item[key])
+  }
+  return formData;
+}
+
+const Admin = {
+  createProduct: (product: any) => requests.postForm('products', createFormData(product)),
+  updateProduct: (product: any) => requests.putForm('products', createFormData(product)),
+  deleteProduct: (id: number) => requests.delete(`products/${id}`)
+}
+
 const agent = {
   Catalog,
   TestErrors,
@@ -117,6 +143,7 @@ const agent = {
   Account,
   Orders,
   Payments,
+  Admin,
 };
 
 export default agent;
